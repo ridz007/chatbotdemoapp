@@ -4,6 +4,7 @@ import { ChatService } from './chat.service';
 import { FormsModule } from '@angular/forms';
 import { ChatDialogComponent } from './chat-dialog/chat-dialog.component';
 import { HttpModule } from '@angular/http';
+import { DimantedeskService } from '../shared/rest-header.service';
 
 @NgModule({
   imports: [
@@ -13,6 +14,6 @@ import { HttpModule } from '@angular/http';
   ],
   declarations: [ChatDialogComponent],
   exports: [ ChatDialogComponent ],
-  providers: [ChatService]
+  providers: [ChatService, DimantedeskService]
 })
 export class ChatModule { }

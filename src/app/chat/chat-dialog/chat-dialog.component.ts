@@ -1,3 +1,4 @@
+import { DimantedeskService } from './../../shared/rest-header.service';
 import { Message, ChatService } from './../chat.service';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -5,7 +6,7 @@ import 'rxjs/add/operator/scan';
 @Component({
   selector: 'app-chat-dialog',
   templateUrl: './chat-dialog.component.html',
-  styleUrls: ['./chat-dialog.component.css']
+  styleUrls: ['./chat-dialog.component.css'],
 })
 export class ChatDialogComponent implements OnInit {
   messages: Observable<Message[]>;

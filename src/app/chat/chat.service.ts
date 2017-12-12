@@ -5,9 +5,10 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { environment } from '../../environments/environment';
 import { Http } from '@angular/http';
 import {UsernameToken} from 'wsse';
+
 import 'wsse';
 import 'crypto';
-
+import { DimantedeskService } from '../shared/rest-header.service';
 declare var require: any;
 // Message class for displaying messages in the component
 export class Message {
@@ -18,17 +19,14 @@ export class ChatService {
   readonly token = environment.dialogflow.angularBot;
   readonly client = new ApiAiClient({ accessToken: this.token });
   conversation = new BehaviorSubject<Message[]>([]);
-  constructor(protected http: Http) {
+  constructor(
+    protected http: Http,
+    private dimantedeskService: DimantedeskService) {
 }
   // Sends and receives messages via DialogFlow
   converse(msg: string) {
     const userMessage = new Message(msg, 'user');
     this.update(userMessage);
-    const usernameToken = new UsernameToken({ username: 'diamantedesk', password: '7c19496a1a40bcee51ebeefbaaed9d115d304d81' });
-    // const wsse = require('wsse');
-    // const token = UsernameToken({ username: 'diamantedesk', password: '7c19496a1a40bcee51ebeefbaaed9d115d304d81' });
-    console.log(usernameToken.getWSSEHeader());
-
     return this.client.textRequest(msg)
                .then(res => {
                   const speech = res.result.fulfillment.speech;
@@ -38,16 +36,18 @@ export class ChatService {
                   console.log('output is  ' + res.result.resolvedQuery);
                 //  const temp1 =  wsseservice.getWSSEHeader('diamantedesk', '7c19496a1a40bcee51ebeefbaaed9d115d304d81');
                 //  console.log('getWSSEHeader  ' + temp1);
-                  if (res.result.resolvedQuery === 'create ticket') {
-                    this.http.get('http://104.154.217.246/desk/tickets').subscribe(data => {
-                      // Read the result field from the JSON response.
+                  if (res.result.resolvedQuery === 'r') {
+
+                    // tslint:disable-next-line:max-line-length
+                    const usernameToken = new UsernameToken({ username: 'diamantedesk', password: 'f8d1134222d0c393bf805f8104444141437fcc63',
+                    sha1encoding: 'hex' });
+                    const dimantedeskParam = usernameToken.getWSSEHeader({ nonceBase64: true });
+                    console.log(usernameToken.getWSSEHeader({ nonceBase64: true })); // { nonceBase64: true }
+
+                    this.dimantedeskService.get('http://104.154.217.246/api/rest/latest/desk/branches',
+                     dimantedeskParam).subscribe(data => {
                       const results = data['results'];
                       console.log('output is  ' + results);
-                      // tslint:disable-next-line:comment-format
-                      // tslint:disable-next-line:max-line-length
-                      // Username="diamantedesk", PasswordDigest="1MGIgj7fjeNLMUYfRWsb9yYAth0=", Nonce="SR+4QnGSpE4nQ+6ok1hddQ==", Created="2017-12-08T09:15:49+0000"
-                   // Username== "diamantedesk", PasswordDigest="7c19496a1a40bcee51ebeefbaaed9d115d304d81", Nonce="", Created=""
-
                     },
                     error => {
                       console.log('error is' + error);
