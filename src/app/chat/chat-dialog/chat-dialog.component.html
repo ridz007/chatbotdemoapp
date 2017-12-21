@@ -1,10 +1,13 @@
-<h1> Welcome to Chat Bot app !!</h1>
+<div class="container">
 <ng-container *ngFor="let message of messages | async">
-  <div class="message" [ngClass]="{ 'from': message.sentBy === 'bot',
-                                    'to':   message.sentBy === 'user' }">
-    {{ message.content }}
+  <div *ngIf="message.sentBy == 'user'" class="message to">{{ message.content }}</div> 
+  <div *ngIf="message.sentBy == 'bot'" class="message from">
+      <span>
+          <img src="../../../assets/logoDots.gif" alt="This will display an animated GIF" class="botImage"/>  
+      </span><span>{{message.content}}</span> 
   </div>
 </ng-container>
-<label for="nameField">Your Message</label>
+<label for="nameField" class="textMessage">Your Message</label>
 <input [(ngModel)]="formValue" (keyup.enter)="sendMessage()" type="text">
 <button (click)="sendMessage()">Send</button>
+</div>

@@ -19,7 +19,7 @@
 
       // angular bundles
       'crypto': 'node_modules/crypto-js',
-      'wsse': 'node_modules/wsse',
+      // 'wsse': 'node_modules/wsse',
     
     },
     // packages tells the System loader how to load when no filename and/or no extension
@@ -36,10 +36,10 @@
         "main":"index.js",
         "defaultExtension": "js"
       },
-      "wsse": {
-        "main":"index.js",
-        "defaultExtension": "js"
-      },
+      // "wsse": {
+      // "main":"index.js",
+      //   "defaultExtension": "js"
+      // },
       
     },
 
